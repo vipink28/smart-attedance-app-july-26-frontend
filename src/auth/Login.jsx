@@ -4,6 +4,7 @@ import Button from "../components/form/Button";
 import api from "../api/config";
 import { useNavigate } from "react-router";
 import AuthContext from "../context/AuthContext";
+import { showToast } from "../helper/toast-utility";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -21,6 +22,7 @@ const Login = () => {
     e.preventDefault();
     try {
       let userData = await login(formData);
+      showToast("success", "Login successful!");
       if (userData.role === "admin") {
         navigate("/admin");
       } else if (userData.role === "teacher") {
@@ -29,6 +31,7 @@ const Login = () => {
         navigate("/student");
       }
     } catch (error) {
+      showToast("error", "Login failed!");
       console.log(error);
     }
   };

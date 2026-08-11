@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import FormInput from "./FormInput";
 import Button from "./Button";
 import api from "../../api/config";
+import { showToast } from "../../helper/toast-utility";
 
-const UserForm = () => {
+const UserForm = ({ onClose }) => {
   const [formData, setFormData] = useState(null);
   const handleInputs = (e) => {
     let { name, value } = e.target;
@@ -16,8 +17,10 @@ const UserForm = () => {
     e.preventDefault();
     try {
       const response = await api.post("/admin/users", formData);
-      console.log(response.data);
+      showToast("success", "User added successfully!");
+      onClose(false);
     } catch (error) {
+      showToast("error", "Failed to add user!");
       console.log(error);
     }
   };
