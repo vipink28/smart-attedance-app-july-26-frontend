@@ -5,6 +5,7 @@ import UserForm from "../../components/form/UserForm";
 import api from "../../api/config";
 import { Eye, PenSquare, Trash } from "lucide-react";
 import { formatDate } from "../../helper";
+import { showToast } from "../../helper/toast-utility";
 
 // reducer function has two parameters - state, action
 // state - it contains current state value.
@@ -28,6 +29,7 @@ const Users = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isUserPopup, setIsUserPopup] = useState(false);
   const [usersList, setUsersList] = useState(null);
+  const [userType, setUserType] = useState("teacher");
 
   const [state, dispatch] = useReducer(reducer, null);
   // dispatch method is used to dispatch the action to reducer function.
@@ -45,6 +47,17 @@ const Users = () => {
     }
   };
 
+  const deactivateUser = async (id) => {
+    try {
+      const response = await api.patch(`/admin/users/${id}/deactivate`);
+      showToast("success", "User deactivated successfully");
+      fetchUsers(response.data.user.role);
+      setIsUserPopup(false);
+    } catch (error) {
+      showToast(error);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -57,11 +70,27 @@ const Users = () => {
       <div className="py-5">
         <h1>Users List</h1>
         <div className="flex items-center gap-4">
-          <Button onClick={() => fetchUsers("teacher")}>Teachers</Button>
-          <Button onClick={() => fetchUsers("student")}>Students</Button>
+          <Button
+            onClick={() => {
+              fetchUsers("teacher");
+              setUserType("teacher");
+            }}
+          >
+            Teachers
+          </Button>
+          <Button
+            onClick={() => {
+              fetchUsers("student");
+              setUserType("student");
+            }}
+          >
+            Students
+          </Button>
         </div>
         <div className="py-4">
-          <h2 className="mb-4">Teacher</h2>
+          <h2 className="mb-4">
+            {userType === "teacher" ? "Teacher" : "Student"}
+          </h2>
           <div>
             {usersList ? (
               usersList.map((user, index) => (
@@ -114,7 +143,7 @@ const Users = () => {
       </div>
       {showPopup && (
         <Popup onClose={setShowPopup}>
-          <UserForm onClose={setShowPopup} />
+          <UserForm onClose={setShowPopup} fetchUsers={fetchUsers} />
         </Popup>
       )}
 
@@ -125,9 +154,25 @@ const Users = () => {
               <p>{formatDate(state.data.createdAt)}</p>
             </div>
           ) : state.contentType === "edit" ? (
-            <div>Edit</div>
+            <UserForm
+              onClose={setIsUserPopup}
+              isUpdate={true}
+              data={state.data}
+              fetchUsers={fetchUsers}
+            />
           ) : (
-            <div>Delete</div>
+            <div>
+              <p>Do you want to deactivate this user ?</p>
+              <div className="flex gap-3 items-center justify-end">
+                <Button
+                  primary={true}
+                  onClick={() => deactivateUser(state.data._id)}
+                >
+                  Yes
+                </Button>
+                <Button>No</Button>
+              </div>
+            </div>
           )}
         </Popup>
       )}

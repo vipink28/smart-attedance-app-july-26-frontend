@@ -17,6 +17,7 @@ import MyAttendance from "./pages/student/MyAttendance";
 import MarkAttendance from "./pages/student/MarkAttendance";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Users from "./pages/admin/Users";
+import SingleClass from "./pages/teacher/SingleClass";
 
 const AppRouter = () => {
   return (
@@ -47,6 +48,7 @@ const AppRouter = () => {
         <Route index element={<TeacherDashboard />}></Route>
         <Route path="/teacher/students" element={<Students />}></Route>
         <Route path="/teacher/classes" element={<Classes />}></Route>
+        <Route path="/teacher/class/:classid" element={<SingleClass />}></Route>
       </Route>
       <Route
         path="/student"
