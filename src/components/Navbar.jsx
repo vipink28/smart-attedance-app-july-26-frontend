@@ -3,6 +3,7 @@ import Container from "./Container";
 import { Link, NavLink, useNavigate } from "react-router";
 import CustomNavLink from "./CustomNavLink";
 import AuthContext from "../context/AuthContext";
+import logo from "../assets/saa-logo.png";
 
 const Navbar = ({ routes }) => {
   const { user, logout } = useContext(AuthContext);
@@ -17,7 +18,9 @@ const Navbar = ({ routes }) => {
     <div className="bg-mauve-950">
       <Container>
         <div className="flex items-center justify-between">
-          <Link to="/">Smart Attendance</Link>
+          <Link to="/">
+            <img src={logo} alt="Smart Attendance" className="w-56" />
+          </Link>
           <div className="flex items-center">
             {routes.map((route) => (
               <CustomNavLink key={route.url} to={route.url} icon={route.icon}>

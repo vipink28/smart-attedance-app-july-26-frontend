@@ -23,7 +23,7 @@ const Classes = () => {
       <div className="py-5 grid grid-cols-4 gap-5">
         {classesList &&
           classesList.map(({ name, code, students, _id }) => (
-            <div className="bg-mauve-700 border border-mauve-500 p-5">
+            <div key={_id} className="bg-mauve-700 border border-mauve-500 p-5">
               <h2>Class: {name}</h2>
               <p>Code: {code}</p>
               <p>Total Students: {students.length}</p>
