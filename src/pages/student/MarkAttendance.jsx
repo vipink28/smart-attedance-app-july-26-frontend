@@ -1,7 +1,7 @@
 import React from "react";
 
 const MarkAttendance = () => {
-  return <div>MarkAttendance</div>;
+  return <div>MarkAttendance Update</div>;
 };
 
 export default MarkAttendance;
