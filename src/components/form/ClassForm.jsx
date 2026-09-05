@@ -67,7 +67,10 @@ const ClassForm = ({ data, isUpdate, fetchClasses }) => {
     let requestBody = { ...formData, schedule };
 
     try {
-      const response = await api.patch("/admin/classes", requestBody);
+      const response = await api.put(
+        `/admin/classes/${formData._id}`,
+        requestBody,
+      );
       fetchClasses();
     } catch (error) {}
   };
