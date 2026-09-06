@@ -62,6 +62,14 @@ const AppRouter = () => {
         <Route path="/student/mark" element={<MarkAttendance />}></Route>
         <Route path="/student/my-attendance" element={<MyAttendance />}></Route>
       </Route>
+      <Route
+        path="/attend/:token"
+        element={
+          <ProtectedRoute role="student">
+            <MarkAttendance />
+          </ProtectedRoute>
+        }
+      ></Route>
       <Route path="*" element={<PageNotFound />}></Route>
     </Routes>
   );
